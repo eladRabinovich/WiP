@@ -2,26 +2,50 @@
 //https://github.com/nijikokun/generate-schema automaticSchema
 function appendModel(dao) {
     var mongoose = require('mongoose');
-
     var statisticsSchema = new mongoose.Schema({
-        totalByUsername:{
-            elad : {type: Number, default: 0},
-            sarah : {type: Number, default: 0}
-        },
-        totalByCategory: {
-            weed : {type: Number, default: 0},
-            food : {type: Number, default: 0},
-            home : {type: Number, default: 0},
-            other : {type: Number, default: 0}
-        },
-        totalCost: {type: Number, default: 0}
-    });
+     totalByUsername: [{type : mongoose.Schema.ObjectId , ref: 'user'}, { type: Number }],
+     totalByCategory: [{type : mongoose.Schema.ObjectId , ref: 'category'}, { type: Number }],
+     totalCost: {type: Number, default: 0}
+     });
+
+    statisticsSchema.methods.getTotal = function () {
+        return this.totalCost;
+    };
+
+    statisticsSchema.methods.getTotalByUserOld = function (username){
+        var totalCost = dao.wip.aggregate([{$match: {username: username}}, {
+            $group: {
+                _id: null,
+                total: {$sum: "$cost"}
+            }
+        }]);
+        return totalCost.total;
+    };
+
+
+    statisticsSchema.methods.getTotalByUser = function (userId){
+        var totalCost = dao.wip.aggregate([{$match: {username: userId}}, {
+            $group: {
+                _id: null,
+                total: {$sum: "$cost"}
+            }
+        }]);
+        return totalCost.total;
+    };
+
+    statisticsSchema.methods.getTotalByCategory = function (categoryId){
+        var totalCost = dao.wip.aggregate([{$match: {username: userId}}, {
+            $group: {
+                _id: null,
+                total: {$sum: "$cost"}
+            }
+        }]);
+        return totalCost.total;
+    };
+
 
     dao.statistics = mongoose.model('statistics', statisticsSchema);
 
-    // statisticsSchema.methods.updateAll = function(category, username, cost, next){
-    //     this.find
-    // }
 }
 
 module.exports = appendModel;

@@ -1,9 +1,13 @@
 'use strict';
 
-function routes(app){
+function routes(app, passport){
     var dao = app.get('dao');
-    var apiController = require('./controllers/apiController')(dao);
-    app.use('/api', apiController);
+
+    var wipController = require('./controllers/wipController')(dao, passport);
+    var loginController = require('./controllers/loginController')(dao, passport);
+
+    app.use('/wip', wipController);
+    app.use('/login', loginController);
 }
 
 module.exports = routes;

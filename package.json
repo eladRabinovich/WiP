@@ -6,7 +6,15 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "mongodb": "^2.2.11",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "passport" : "latest",
+    "passport-local" : "latest",
+    "bcrypt-nodejs" : "latest",
+    "connect-flash" : "latest",
+    "morgan" : "latest",
+    "cookie-parser" : "latest",
+    "express-session": "latest",
+    "ejs" : "latest"
   },
   "devDependencies": {},
   "scripts": {
